@@ -1,34 +1,85 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <%- include('partials/head') %>
   </head>
   <body>
-    <header>
-      <div class="container">
-        <h1>Сайт документов</h1>
-        <nav>
-          <ul>
-            <li><a href="/">Главная</a></li>
-            <li><a href="/documents">Документы</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <%- include('partials/header') %>
 
-    <main class="container">
-      <h2>Добро пожаловать на сайт документов</h2>
-      <p>Здесь вы можете хранить и управлять своими документами</p>
+    <main>
+      <section class="hero">
+        <div class="container">
+          <h2>Современная облачная библиотека документов</h2>
+          <p>
+            Электронная библиотека для организации информации, обучения
+            сотрудников и хранения важных документов в едином защищенном
+            пространстве
+          </p>
+          <div class="mt-2">
+            <a href="/documents" class="btn">Начать работу</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="container">
+        <h3 class="section-title">Преимущества нашей библиотеки</h3>
+        <div class="features">
+          <div class="feature-card">
+            <h3>Гибкий поиск</h3>
+            <p>
+              Находите нужные документы с помощью удобной системы поиска и
+              фильтрации по различным параметрам
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>Полная информация</h3>
+            <p>
+              Получайте полную информацию о документах, включая метаданные,
+              историю изменений и комментарии
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>Предпросмотр файлов</h3>
+            <p>
+              Просматривайте содержимое документов прямо в браузере без
+              необходимости скачивания
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="container">
+        <h3 class="section-title">Последние добавленные документы</h3>
+        <div class="document-card">
+          <div class="document-card-flex">
+            <div>
+              <h3>Руководство пользователя</h3>
+              <p>
+                Подробная инструкция по использованию электронной библиотеки
+              </p>
+            </div>
+            <div class="button-group">
+              <a href="/documents/1" class="btn">Просмотреть</a>
+            </div>
+          </div>
+        </div>
+        <div class="document-card">
+          <div class="document-card-flex">
+            <div>
+              <h3>Политика конфиденциальности</h3>
+              <p>
+                Информация о том, как мы обрабатываем и защищаем ваши данные
+              </p>
+            </div>
+            <div class="button-group">
+              <a href="/documents/2" class="btn">Просмотреть</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer>
-      <div class="container">
-        <p>&copy; 2023 Сайт документов</p>
-      </div>
-    </footer>
+    <%- include('partials/footer') %>
 
     <script src="/js/index.js"></script>
   </body>

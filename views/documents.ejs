@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <%- include('partials/head') %>
   </head>
   <body>
-    <header>
-      <div class="container">
-        <h1>Сайт документов</h1>
-        <nav>
-          <ul>
-            <li><a href="/">Главная</a></li>
-            <li><a href="/documents">Документы</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <%- include('partials/header') %>
 
-    <main class="container">
-      <h2>Страница документов</h2>
+    <main>
+      <section class="hero hero-small">
+        <div class="container">
+          <h2>Библиотека документов</h2>
+          <p>Управляйте документами в едином защищенном пространстве</p>
+        </div>
+      </section>
 
-      <div class="document-card">
-        <h3>Документ #<%= document.id %></h3>
-        <p>Идентификатор документа: <%= document.id %></p>
-        <!-- Здесь можно вывести другие свойства документа -->
-      </div>
+      <section class="container">
+        <div class="search-container">
+          <input
+            type="text"
+            placeholder="Поиск документов..."
+            class="search-input"
+          />
+          <button class="btn">Найти</button>
+        </div>
+
+        <div class="header-actions">
+          <h3 class="section-title section-title-left">Ваши документы</h3>
+          <a href="/documents/create" class="btn">Добавить документ</a>
+        </div>
+
+        <div class="document-card">
+          <div class="document-card-flex">
+            <div>
+              <h3>Документ #<%= document.id %></h3>
+              <p>Идентификатор документа: <%= document.id %></p>
+              <p class="document-card-date">Добавлен: 10.05.2023</p>
+            </div>
+            <div class="button-group">
+              <a
+                href="/documents/<%= document.id %>/edit"
+                class="btn btn-success"
+                >Редактировать</a
+              >
+              <a
+                href="/documents/<%= document.id %>/delete"
+                class="btn btn-danger"
+                >Удалить</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="document-card">
+          <div class="document-card-flex">
+            <div>
+              <h3>Презентация проекта</h3>
+              <p>Презентация для клиентов о новом проекте</p>
+              <p class="document-card-date">Добавлен: 05.05.2023</p>
+            </div>
+            <div class="button-group">
+              <a href="/documents/2/edit" class="btn btn-success"
+                >Редактировать</a
+              >
+              <a href="/documents/2/delete" class="btn btn-danger">Удалить</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer>
-      <div class="container">
-        <p>&copy; 2025 Сайт документов</p>
-      </div>
-    </footer>
+    <%- include('partials/footer') %>
 
     <script src="/js/index.js"></script>
   </body>
