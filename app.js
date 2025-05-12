@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Маршруты
 app.use("/", require("./routes/index"));
+app.use("/documents", require("./routes/index"));
 
 // Запуск сервера
 app.listen(PORT, () => {

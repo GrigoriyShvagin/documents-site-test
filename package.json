@@ -1,10 +1,10 @@
 {
   "name": "document-site",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,10 +12,12 @@
   "license": "ISC",
   "description": "Сайт для управления документами",
   "dependencies": {
+    "ajax": "^0.0.4",
     "ejs": "^3.1.10",
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "mocha": "^11.2.2",
     "nodemon": "^3.0.1"
   }
 }
