@@ -14,7 +14,9 @@
   "dependencies": {
     "ajax": "^0.0.4",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "pg": "^8.16.0"
   },
   "devDependencies": {
     "mocha": "^11.2.2",
