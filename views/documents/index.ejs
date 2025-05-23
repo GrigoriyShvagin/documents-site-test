@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+
+    <main>
+      <section class="hero hero-small">
+        <div class="container">
+          <h2>Библиотека документов</h2>
+          <p>Управляйте документами в едином защищенном пространстве</p>
+        </div>
+      </section>
+
+      <section class="container">
+        <div class="search-container">
+          <form method="GET" action="/documents/search">
+            <input
+              type="text"
+              name="query"
+              placeholder="Поиск документов..."
+              class="search-input"
+            />
+            <button type="submit" class="btn">Найти</button>
+          </form>
+        </div>
+
+        <div class="header-actions">
+          <h3 class="section-title section-title-left">Все документы</h3>
+          <a href="/documents/create" class="btn">Добавить документ</a>
+        </div>
+
+        <% if (documents && documents.length > 0) { %> <%
+        documents.forEach(function(document) { %>
+        <div class="document-card">
+          <div class="document-card-flex">
+            <div>
+              <h3><%= document.title %></h3>
+              <p><%= document.description %></p>
+              <p class="document-card-date">
+                Автор: <%= document.username || 'Неизвестно' %> | Добавлен: <%=
+                new Date(document.created_at).toLocaleDateString('ru-RU') %>
+              </p>
+            </div>
+            <div class="button-group">
+              <a href="/documents/<%= document.id %>" class="btn btn-secondary"
+                >Просмотреть</a
+              >
+
+              <% if (user.role === 'admin' || document.user_id === user.id) { %>
+              <a
+                href="/documents/<%= document.id %>/edit"
+                class="btn btn-success"
+                >Редактировать</a
+              >
+              <% } %> <% if (user.role === 'admin' || user.role === 'support' ||
+              document.user_id === user.id) { %>
+              <form
+                method="POST"
+                action="/documents/<%= document.id %>/delete"
+                style="display: inline"
+              >
+                <button
+                  type="submit"
+                  class="btn btn-danger"
+                  onclick="return confirm('Удалить документ?')"
+                >
+                  Удалить
+                </button>
+              </form>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <div class="empty-state">
+          <p>Документы не найдены</p>
+          <a href="/documents/create" class="btn">Добавить первый документ</a>
+        </div>
+        <% } %>
+      </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

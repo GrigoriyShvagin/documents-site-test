@@ -1,20 +1,22 @@
-const mysql = require("mysql2");
+const { Pool } = require("pg");
 
-// Создаем подключение к базе данных
-const connection = mysql.createConnection({
+// Создаем пул подключений к PostgreSQL
+const pool = new Pool({
   host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
+  user: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "dochub",
+  database: process.env.DB_NAME || "document_library",
+  port: process.env.DB_PORT || 5432,
 });
 
-// Устанавливаем соединение
-connection.connect((err) => {
+// Проверяем соединение
+pool.connect((err, client, release) => {
   if (err) {
     console.error("Ошибка подключения к базе данных:", err);
     return;
   }
-  console.log("Подключение к базе данных установлено");
+  console.log("Подключение к PostgreSQL установлено");
+  release();
 });
 
-module.exports = connection;
+module.exports = pool;

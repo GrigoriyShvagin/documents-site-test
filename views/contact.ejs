@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <%- include('partials/head') %>
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="container">
+        <div class="form-container">
+          <h2>Обратная связь</h2>
+          <p>Напишите нам, если у вас есть вопросы или предложения</p>
+
+          <% if (error) { %>
+          <div class="alert alert-error"><%= error %></div>
+          <% } %> <% if (success) { %>
+          <div class="alert alert-success"><%= success %></div>
+          <% } %>
+
+          <form method="POST" action="/documents/contact/send">
+            <div class="form-group">
+              <label for="subject">Тема сообщения:</label>
+              <input type="text" id="subject" name="subject" required />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Сообщение:</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn">Отправить сообщение</button>
+              <a href="/documents/contact/my" class="btn btn-secondary"
+                >Мои сообщения</a
+              >
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

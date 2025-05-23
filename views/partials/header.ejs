@@ -4,9 +4,32 @@
     <nav>
       <ul>
         <li><a href="/">Главная</a></li>
+
+        <% if (user) { %>
+        <!-- Авторизованный пользователь -->
         <li><a href="/documents">Документы</a></li>
+        <li><a href="/documents/my">Мои документы</a></li>
+        <li><a href="/documents/contact/form">Поддержка</a></li>
+
+        <% if (user.role === 'admin') { %>
+        <!-- Админ -->
+        <li><a href="/admin">Админка</a></li>
+        <% } %> <% if (user.role === 'support' || user.role === 'admin') { %>
+        <!-- Поддержка -->
+        <li><a href="/support">Поддержка</a></li>
+        <% } %>
+
+        <li class="user-menu">
+          <span>Привет, <%= user.username %>!</span>
+          <a href="/auth/logout" class="logout-btn">Выход</a>
+        </li>
+        <% } else { %>
+        <!-- Неавторизованный пользователь -->
         <li><a href="/about">О библиотеке</a></li>
-        <li><a href="/login">Вход</a></li>
+        <li><a href="/contact">Контакты</a></li>
+        <li><a href="/auth/login">Вход</a></li>
+        <li><a href="/auth/register">Регистрация</a></li>
+        <% } %>
       </ul>
     </nav>
   </div>

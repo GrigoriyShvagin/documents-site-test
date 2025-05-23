@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+
+    <main>
+      <section class="container">
+        <div class="auth-form">
+          <h2>Вход в систему</h2>
+
+          <% if (error) { %>
+          <div class="alert alert-error"><%= error %></div>
+          <% } %>
+
+          <form method="POST" action="/auth/login">
+            <div class="form-group">
+              <label for="username">Логин:</label>
+              <input type="text" id="username" name="username" required />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Пароль:</label>
+              <input type="password" id="password" name="password" required />
+            </div>
+
+            <button type="submit" class="btn">Войти</button>
+          </form>
+
+          <div class="auth-links">
+            <p>Нет аккаунта? <a href="/auth/register">Зарегистрироваться</a></p>
+          </div>
+
+          <div class="demo-accounts">
+            <h4>Тестовые аккаунты:</h4>
+            <ul>
+              <li><strong>admin</strong> / admin123 (Администратор)</li>
+              <li><strong>support</strong> / support123 (Поддержка)</li>
+              <li><strong>user1</strong> / user123 (Пользователь)</li>
+              <li><strong>user2</strong> / user123 (Пользователь)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>
