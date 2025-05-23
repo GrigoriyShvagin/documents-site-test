@@ -1,0 +1,93 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Сообщения пользователей</h1>
+
+  <div class="filters">
+    <a
+      href="/support/messages"
+      class="btn <%= !currentStatus ? 'btn-primary' : 'btn-outline' %>"
+      >Все</a
+    >
+    <a
+      href="/support/messages?status=new"
+      class="btn <%= currentStatus === 'new' ? 'btn-primary' : 'btn-outline' %>"
+      >Новые</a
+    >
+    <a
+      href="/support/messages?status=in_progress"
+      class="btn <%= currentStatus === 'in_progress' ? 'btn-primary' : 'btn-outline' %>"
+      >В работе</a
+    >
+    <a
+      href="/support/messages?status=resolved"
+      class="btn <%= currentStatus === 'resolved' ? 'btn-primary' : 'btn-outline' %>"
+      >Решенные</a
+    >
+  </div>
+
+  <div class="messages-container">
+    <% if (messages && messages.length > 0) { %> <% messages.forEach(message =>
+    { %>
+    <div class="message-item <%= message.status %>">
+      <div class="message-header">
+        <h3><%= message.subject %></h3>
+        <div class="message-info">
+          <span class="status-badge <%= message.status %>">
+            <%= message.status === 'new' ? 'Новое' : message.status ===
+            'in_progress' ? 'В работе' : 'Решено' %>
+          </span>
+          <span class="date"
+            ><%= new Date(message.created_at).toLocaleDateString('ru') %></span
+          >
+        </div>
+      </div>
+      <div class="message-content">
+        <p>
+          <strong>От:</strong> <%= message.username %> (<%= message.email %>)
+        </p>
+        <p><%= message.message %></p>
+      </div>
+      <div class="message-actions">
+        <% if (message.status === 'new') { %>
+        <form
+          action="/support/messages/<%= message.id %>/update"
+          method="POST"
+          style="display: inline"
+        >
+          <input type="hidden" name="status" value="in_progress" />
+          <button type="submit" class="btn btn-secondary btn-sm">
+            Взять в работу
+          </button>
+        </form>
+        <% } %> <% if (message.status === 'in_progress') { %>
+        <form
+          action="/support/messages/<%= message.id %>/update"
+          method="POST"
+          style="display: inline"
+        >
+          <input type="hidden" name="status" value="resolved" />
+          <button type="submit" class="btn btn-success btn-sm">Решено</button>
+        </form>
+        <% } %> <% if (message.status === 'resolved') { %>
+        <form
+          action="/support/messages/<%= message.id %>/update"
+          method="POST"
+          style="display: inline"
+        >
+          <input type="hidden" name="status" value="in_progress" />
+          <button type="submit" class="btn btn-warning btn-sm">
+            Переоткрыть
+          </button>
+        </form>
+        <% } %>
+      </div>
+    </div>
+    <% }); %> <% } else { %>
+    <p class="no-messages">Сообщений не найдено</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

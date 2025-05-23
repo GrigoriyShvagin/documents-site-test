@@ -1,0 +1,52 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Результаты поиска: "<%= query %>"</h1>
+
+  <div class="search-container">
+    <form action="/documents/search" method="GET">
+      <input
+        type="text"
+        name="query"
+        value="<%= query %>"
+        placeholder="Поиск документов..."
+        class="search-input"
+      />
+      <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+  </div>
+
+  <% if (documents && documents.length > 0) { %>
+  <p>Найдено документов: <strong><%= documents.length %></strong></p>
+
+  <div class="documents-grid">
+    <% documents.forEach(document => { %>
+    <div class="document-card">
+      <h3><a href="/documents/<%= document.id %>"><%= document.title %></a></h3>
+      <p class="description"><%= document.description || 'Без описания' %></p>
+      <div class="document-meta">
+        <small>Автор: <%= document.username || 'Неизвестно' %></small>
+        <small
+          >Создан: <%= new Date(document.created_at).toLocaleDateString('ru')
+          %></small
+        >
+      </div>
+      <div class="document-actions">
+        <a href="/documents/<%= document.id %>" class="btn btn-sm btn-primary"
+          >Просмотр</a
+        >
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } else { %>
+  <div class="empty-state">
+    <h2>Ничего не найдено</h2>
+    <p>По запросу "<%= query %>" документы не найдены</p>
+    <a href="/documents" class="btn btn-primary">Все документы</a>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

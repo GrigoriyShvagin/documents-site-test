@@ -7,16 +7,17 @@ const SupportController = {
     try {
       const newMessages = await Message.getByStatus("new");
       const inProgressMessages = await Message.getByStatus("in_progress");
-      const allMessages = await Message.getAll();
+      const resolvedMessages = await Message.getByStatus("resolved");
+      const recentMessages = await Message.getRecentMessages(5); // Последние 5 сообщений
 
       res.render("support/dashboard", {
         title: "Панель поддержки",
         stats: {
-          newCount: newMessages.length,
-          inProgressCount: inProgressMessages.length,
-          totalCount: allMessages.length,
+          newMessages: newMessages.length,
+          inProgressMessages: inProgressMessages.length,
+          resolvedMessages: resolvedMessages.length,
         },
-        newMessages,
+        recentMessages,
       });
     } catch (err) {
       console.error(err);
@@ -30,10 +31,19 @@ const SupportController = {
   // Все сообщения
   messages: async (req, res) => {
     try {
-      const messages = await Message.getAll();
+      const { status } = req.query;
+      let messages;
+
+      if (status && ["new", "in_progress", "resolved"].includes(status)) {
+        messages = await Message.getByStatus(status);
+      } else {
+        messages = await Message.getAll();
+      }
+
       res.render("support/messages", {
-        title: "Все сообщения",
+        title: "Сообщения пользователей",
         messages,
+        currentStatus: status || null,
       });
     } catch (err) {
       console.error(err);
@@ -82,7 +92,7 @@ const SupportController = {
       }
 
       await Message.updateStatus(messageId, status);
-      res.redirect(`/support/messages/${messageId}`);
+      res.redirect("/support/messages");
     } catch (err) {
       console.error(err);
       res.render("error", {

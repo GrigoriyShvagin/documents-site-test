@@ -48,6 +48,7 @@ const DocumentsController = {
       res.render("documents/show", {
         title: document.title,
         document,
+        user: req.session.user,
       });
     } catch (err) {
       console.error(err);
@@ -69,18 +70,19 @@ const DocumentsController = {
   // Создание документа
   create: async (req, res) => {
     try {
-      const { title, description } = req.body;
+      const { title, description, content } = req.body;
 
-      if (!title || !description) {
+      if (!title) {
         return res.render("documents/create", {
           title: "Добавить документ",
-          error: "Заполните все поля",
+          error: "Название документа обязательно",
         });
       }
 
       await Document.create({
         title,
-        description,
+        description: description || null,
+        content: content || null,
         file_path: null, // Пока без файлов
         user_id: req.session.user.id,
       });
@@ -134,7 +136,7 @@ const DocumentsController = {
   // Обновление документа
   update: async (req, res) => {
     try {
-      const { title, description } = req.body;
+      const { title, description, content } = req.body;
       const document = await Document.getById(req.params.id);
 
       if (!document) {
@@ -155,20 +157,22 @@ const DocumentsController = {
         });
       }
 
-      if (!title || !description) {
+      if (!title) {
         return res.render("documents/edit", {
           title: "Редактировать документ",
           document,
-          error: "Заполните все поля",
+          error: "Название документа обязательно",
         });
       }
 
       await Document.update(req.params.id, {
         title,
-        description,
-        file_path: null,
+        description: description || null,
+        content: content || null,
+        file_path: document.file_path,
       });
-      res.redirect("/documents/my");
+
+      res.redirect(`/documents/${req.params.id}`);
     } catch (err) {
       console.error(err);
       res.render("error", {

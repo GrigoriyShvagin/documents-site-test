@@ -18,6 +18,7 @@ router.get("/messages", SupportController.messages);
 router.get("/messages/:id", SupportController.showMessage);
 
 // Обновление статуса сообщения
+router.post("/messages/:id/update", SupportController.updateStatus);
 router.post("/messages/:id/status", SupportController.updateStatus);
 
 // Удаление сообщения

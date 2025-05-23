@@ -66,6 +66,25 @@ class Message {
     }
   }
 
+  // Получить последние сообщения
+  static async getRecentMessages(limit = 5) {
+    try {
+      const result = await db.query(
+        `
+        SELECT m.*, u.username 
+        FROM messages m 
+        LEFT JOIN users u ON m.user_id = u.id 
+        ORDER BY m.created_at DESC 
+        LIMIT $1
+      `,
+        [limit]
+      );
+      return result.rows;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   // Создать новое сообщение
   static async create(messageData) {
     try {

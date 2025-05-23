@@ -1,0 +1,38 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Панель администратора</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>👥 Пользователи</h3>
+      <p class="stat-number"><%= stats.usersCount %></p>
+      <a href="/admin/users" class="btn btn-primary">Управление</a>
+    </div>
+
+    <div class="stat-card">
+      <h3>📄 Документы</h3>
+      <p class="stat-number"><%= stats.documentsCount %></p>
+      <a href="/admin/documents" class="btn btn-primary">Управление</a>
+    </div>
+
+    <div class="stat-card">
+      <h3>💬 Новые сообщения</h3>
+      <p class="stat-number"><%= stats.newMessagesCount %></p>
+      <a href="/support/messages" class="btn btn-primary">Просмотр</a>
+    </div>
+  </div>
+
+  <div class="admin-actions">
+    <h2>Быстрые действия</h2>
+    <div class="action-buttons">
+      <a href="/admin/users" class="btn btn-outline">Пользователи</a>
+      <a href="/admin/documents" class="btn btn-outline">Документы</a>
+      <a href="/support/messages" class="btn btn-outline">Сообщения</a>
+      <a href="/documents/create" class="btn btn-primary">Добавить документ</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

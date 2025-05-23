@@ -1,0 +1,51 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Управление пользователями</h1>
+
+  <div class="table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Имя пользователя</th>
+          <th>Email</th>
+          <th>Роль</th>
+          <th>Дата регистрации</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td>
+            <span class="role-badge <%= user.role %>">
+              <%= user.role === 'admin' ? 'Админ' : user.role === 'support' ?
+              'Поддержка' : 'Пользователь' %>
+            </span>
+          </td>
+          <td><%= new Date(user.created_at).toLocaleDateString('ru') %></td>
+          <td>
+            <form
+              action="/admin/users/<%= user.id %>/delete"
+              method="POST"
+              style="display: inline"
+              onsubmit="return confirm('Удалить пользователя?')"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">
+                Удалить
+              </button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -42,10 +42,10 @@ class Document {
   // Создать новый документ
   static async create(documentData) {
     try {
-      const { title, description, file_path, user_id } = documentData;
+      const { title, description, content, file_path, user_id } = documentData;
       const result = await db.query(
-        "INSERT INTO documents (title, description, file_path, user_id) VALUES ($1, $2, $3, $4) RETURNING id",
-        [title, description, file_path, user_id]
+        "INSERT INTO documents (title, description, content, file_path, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+        [title, description, content, file_path, user_id]
       );
       return result.rows[0].id;
     } catch (err) {
@@ -56,10 +56,10 @@ class Document {
   // Обновить документ
   static async update(id, documentData) {
     try {
-      const { title, description, file_path } = documentData;
+      const { title, description, content, file_path } = documentData;
       const result = await db.query(
-        "UPDATE documents SET title = $1, description = $2, file_path = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $4",
-        [title, description, file_path, id]
+        "UPDATE documents SET title = $1, description = $2, content = $3, file_path = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5",
+        [title, description, content, file_path, id]
       );
       return result.rowCount > 0;
     } catch (err) {
@@ -83,7 +83,7 @@ class Document {
   static async search(query) {
     try {
       const result = await db.query(
-        "SELECT d.*, u.username FROM documents d LEFT JOIN users u ON d.user_id = u.id WHERE d.title ILIKE $1 OR d.description ILIKE $1 ORDER BY d.created_at DESC",
+        "SELECT d.*, u.username FROM documents d LEFT JOIN users u ON d.user_id = u.id WHERE d.title ILIKE $1 OR d.description ILIKE $1 OR d.content ILIKE $1 ORDER BY d.created_at DESC",
         [`%${query}%`]
       );
       return result.rows;

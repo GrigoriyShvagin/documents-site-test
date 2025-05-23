@@ -5,7 +5,12 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed:run",
+    "migrate:make": "knex migrate:make",
+    "seed:make": "knex seed:make",
+    "test:mocha": "mocha --recursive --exit",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +18,7 @@
   "description": "Сайт для управления документами",
   "dependencies": {
     "ajax": "^0.0.4",
+    "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.17.3",

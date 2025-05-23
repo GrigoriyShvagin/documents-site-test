@@ -1,0 +1,60 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Мои документы</h1>
+
+  <div class="actions-bar">
+    <a href="/documents/create" class="btn btn-primary">Добавить документ</a>
+    <a href="/documents" class="btn btn-outline">Все документы</a>
+  </div>
+
+  <% if (documents && documents.length > 0) { %>
+  <div class="documents-grid">
+    <% documents.forEach(document => { %>
+    <div class="document-card">
+      <h3><a href="/documents/<%= document.id %>"><%= document.title %></a></h3>
+      <p class="description"><%= document.description || 'Без описания' %></p>
+      <div class="document-meta">
+        <small
+          >Создан: <%= new Date(document.created_at).toLocaleDateString('ru')
+          %></small
+        >
+        <% if (document.updated_at !== document.created_at) { %>
+        <small
+          >Изменен: <%= new Date(document.updated_at).toLocaleDateString('ru')
+          %></small
+        >
+        <% } %>
+      </div>
+      <div class="document-actions">
+        <a href="/documents/<%= document.id %>" class="btn btn-sm btn-primary"
+          >Просмотр</a
+        >
+        <a
+          href="/documents/<%= document.id %>/edit"
+          class="btn btn-sm btn-secondary"
+          >Редактировать</a
+        >
+        <form
+          action="/documents/<%= document.id %>/delete"
+          method="POST"
+          style="display: inline"
+          onsubmit="return confirm('Удалить документ?')"
+        >
+          <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+        </form>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } else { %>
+  <div class="empty-state">
+    <h2>У вас пока нет документов</h2>
+    <p>Создайте первый документ, чтобы начать работу</p>
+    <a href="/documents/create" class="btn btn-primary">Добавить документ</a>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

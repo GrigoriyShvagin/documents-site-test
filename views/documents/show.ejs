@@ -1,0 +1,67 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <div class="document-header">
+    <h1><%= document.title %></h1>
+    <div class="document-meta">
+      <span>Автор: <%= document.username || 'Неизвестно' %></span>
+      <span
+        >Создан: <%= new Date(document.created_at).toLocaleDateString('ru')
+        %></span
+      >
+      <% if (document.updated_at !== document.created_at) { %>
+      <span
+        >Изменен: <%= new Date(document.updated_at).toLocaleDateString('ru')
+        %></span
+      >
+      <% } %>
+    </div>
+  </div>
+
+  <div class="document-content">
+    <% if (document.description) { %>
+    <div class="description">
+      <h3>Описание</h3>
+      <p><%= document.description %></p>
+    </div>
+    <% } %>
+
+    <div class="content-section">
+      <h3>Содержимое документа</h3>
+      <% if (document.content) { %>
+      <div class="document-text"><%= document.content %></div>
+      <% } else { %>
+      <p class="no-content">Содержимое документа не добавлено</p>
+      <% } %>
+    </div>
+
+    <% if (document.file_path) { %>
+    <div class="file-section">
+      <h3>Файлы</h3>
+      <p>Файл: <%= document.file_path %></p>
+      <!-- В будущем здесь будет возможность скачать PDF -->
+    </div>
+    <% } %>
+  </div>
+
+  <div class="document-actions">
+    <a href="/documents" class="btn btn-outline">Назад к списку</a>
+
+    <% if (user && (user.role === 'admin' || user.id === document.user_id)) { %>
+    <a href="/documents/<%= document.id %>/edit" class="btn btn-secondary"
+      >Редактировать</a
+    >
+    <form
+      action="/documents/<%= document.id %>/delete"
+      method="POST"
+      style="display: inline"
+      onsubmit="return confirm('Удалить документ?')"
+    >
+      <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

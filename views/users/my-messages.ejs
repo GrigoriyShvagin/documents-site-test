@@ -1,0 +1,46 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Мои сообщения в поддержку</h1>
+
+  <div class="actions-bar">
+    <a href="/documents/contact/form" class="btn btn-primary"
+      >Новое сообщение</a
+    >
+  </div>
+
+  <% if (messages && messages.length > 0) { %>
+  <div class="messages-container">
+    <% messages.forEach(message => { %>
+    <div class="message-item <%= message.status %>">
+      <div class="message-header">
+        <h3><%= message.subject %></h3>
+        <div class="message-info">
+          <span class="status-badge <%= message.status %>">
+            <%= message.status === 'new' ? 'Новое' : message.status ===
+            'in_progress' ? 'В работе' : 'Решено' %>
+          </span>
+          <span class="date"
+            ><%= new Date(message.created_at).toLocaleDateString('ru') %></span
+          >
+        </div>
+      </div>
+      <div class="message-content">
+        <p><%= message.message %></p>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } else { %>
+  <div class="empty-state">
+    <h2>У вас нет сообщений</h2>
+    <p>Отправьте первое сообщение в поддержку</p>
+    <a href="/documents/contact/form" class="btn btn-primary"
+      >Написать в поддержку</a
+    >
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

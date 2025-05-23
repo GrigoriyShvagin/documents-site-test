@@ -1,0 +1,62 @@
+<%- include('../partials/head', { title }) %> <%- include('../partials/header')
+%>
+
+<div class="container">
+  <h1>Панель поддержки</h1>
+
+  <div class="support-stats">
+    <div class="stat-card">
+      <h3>💬 Новые сообщения</h3>
+      <p class="stat-number"><%= stats.newMessages %></p>
+      <a href="/support/messages" class="btn btn-primary">Обработать</a>
+    </div>
+
+    <div class="stat-card">
+      <h3>🔄 В работе</h3>
+      <p class="stat-number"><%= stats.inProgressMessages %></p>
+      <a href="/support/messages?status=in_progress" class="btn btn-secondary"
+        >Просмотр</a
+      >
+    </div>
+
+    <div class="stat-card">
+      <h3>✅ Решенные</h3>
+      <p class="stat-number"><%= stats.resolvedMessages %></p>
+      <a href="/support/messages?status=resolved" class="btn btn-success"
+        >Просмотр</a
+      >
+    </div>
+  </div>
+
+  <div class="recent-messages">
+    <h2>Последние сообщения</h2>
+    <div class="messages-list">
+      <% if (recentMessages && recentMessages.length > 0) { %> <%
+      recentMessages.forEach(message => { %>
+      <div class="message-card">
+        <h4><%= message.subject %></h4>
+        <p><%= message.message.substring(0, 100) %>...</p>
+        <div class="message-meta">
+          <span>От: <%= message.username %></span>
+          <span
+            >Статус: <%= message.status === 'new' ? 'Новое' : message.status ===
+            'in_progress' ? 'В работе' : 'Решено' %></span
+          >
+          <span
+            ><%= new Date(message.created_at).toLocaleDateString('ru') %></span
+          >
+        </div>
+        <a
+          href="/support/messages/<%= message.id %>"
+          class="btn btn-sm btn-outline"
+          >Ответить</a
+        >
+      </div>
+      <% }); %> <% } else { %>
+      <p>Новых сообщений нет</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
