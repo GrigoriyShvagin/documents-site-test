@@ -41,4 +41,5 @@ app.use("/support", require("./routes/support"));
 // Запуск сервера
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
+  console.log(1);
 });
