@@ -1,46 +1,51 @@
 const express = require("express");
 const router = express.Router();
 const DocumentsController = require("../controllers/DocumentsController");
-const UsersController = require("../controllers/UsersController");
-const { requireAuth } = require("../middlewares/auth");
+const { requireAuth, requireAdmin } = require("../middlewares/auth");
 
-// Все маршруты требуют авторизации
-router.use(requireAuth);
-
-// Главная страница документов (все документы)
+// Публичные маршруты (доступны всем)
 router.get("/", DocumentsController.index);
+
+// Маршруты для авторизованных пользователей
+router.use(requireAuth);
 
 // Мои документы
 router.get("/my", DocumentsController.myDocuments);
-
-// Поиск документов
-router.get("/search", DocumentsController.search);
 
 // Форма создания документа
 router.get("/create", DocumentsController.createForm);
 
 // Создание документа
-router.post("/create", DocumentsController.create);
-
-// Просмотр документа
-router.get("/:id", DocumentsController.show);
+router.post(
+  "/create",
+  DocumentsController.uploadDocument,
+  DocumentsController.create
+);
 
 // Форма редактирования документа
 router.get("/:id/edit", DocumentsController.editForm);
 
 // Обновление документа
-router.post("/:id/edit", DocumentsController.update);
+router.post(
+  "/:id/edit",
+  DocumentsController.uploadDocument,
+  DocumentsController.update
+);
 
 // Удаление документа
 router.post("/:id/delete", DocumentsController.delete);
 
-// Форма обратной связи
-router.get("/contact/form", UsersController.contactForm);
+// Просмотр документа
+router.get("/:id", DocumentsController.show);
 
-// Отправка сообщения в поддержку
-router.post("/contact/send", UsersController.sendMessage);
+// Скачивание документа
+router.get("/:id/download", DocumentsController.download);
 
-// Мои сообщения
-router.get("/contact/my", UsersController.myMessages);
+// Поиск документов
+router.get("/search", DocumentsController.search);
+
+// Контактная форма для связи с поддержкой
+router.get("/contact/form", DocumentsController.contactForm);
+router.post("/contact", DocumentsController.contact);
 
 module.exports = router;

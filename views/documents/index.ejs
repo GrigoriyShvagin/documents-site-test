@@ -36,27 +36,52 @@
         documents.forEach(function(document) { %>
         <div class="document-card">
           <div class="document-card-flex">
-            <div>
-              <h3><%= document.title %></h3>
-              <p><%= document.description %></p>
-              <p class="document-card-date">
-                Автор: <%= document.username || 'Неизвестно' %> | Добавлен: <%=
-                new Date(document.created_at).toLocaleDateString('ru-RU') %>
-              </p>
+            <div class="document-card-content">
+              <% if (document.file_path) { %> <% let fileIcon = 'fa-file'; if
+              (document.file_type && document.file_type.includes('pdf')) {
+              fileIcon = 'fa-file-pdf'; } else if (document.file_type &&
+              document.file_type.includes('word')) { fileIcon = 'fa-file-word';
+              } %>
+              <div class="document-icon">
+                <i class="fas <%= fileIcon %>"></i>
+              </div>
+              <% } %>
+              <div class="document-info">
+                <h3><%= document.title %></h3>
+                <p><%= document.description %></p>
+                <div class="document-meta">
+                  <span>Автор: <%= document.username || 'Неизвестно' %></span>
+                  <span
+                    >Добавлен: <%= new
+                    Date(document.created_at).toLocaleDateString('ru-RU')
+                    %></span
+                  >
+                  <% if (document.file_name) { %>
+                  <span>Файл: <%= document.file_name %></span>
+                  <% } %>
+                </div>
+              </div>
             </div>
             <div class="button-group">
               <a href="/documents/<%= document.id %>" class="btn btn-secondary"
                 >Просмотреть</a
               >
-
-              <% if (user.role === 'admin' || document.user_id === user.id) { %>
+              <% if (document.file_path) { %>
+              <a
+                href="/documents/<%= document.id %>/download"
+                class="btn btn-outline"
+              >
+                <i class="fas fa-download"></i> Скачать
+              </a>
+              <% } %> <% if (user && (user.role === 'admin' || document.user_id
+              === user.id)) { %>
               <a
                 href="/documents/<%= document.id %>/edit"
                 class="btn btn-success"
                 >Редактировать</a
               >
-              <% } %> <% if (user.role === 'admin' || user.role === 'support' ||
-              document.user_id === user.id) { %>
+              <% } %> <% if (user && (user.role === 'admin' || user.role ===
+              'support' || document.user_id === user.id)) { %>
               <form
                 method="POST"
                 action="/documents/<%= document.id %>/delete"

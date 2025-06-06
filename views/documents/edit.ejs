@@ -9,9 +9,10 @@
   <% } %>
 
   <form
-    action="/documents/<%= document.id %>/update"
+    action="/documents/<%= document.id %>/edit"
     method="POST"
     class="document-form"
+    enctype="multipart/form-data"
   >
     <div class="form-group">
       <label for="title">Название документа*</label>
@@ -31,12 +32,45 @@
       >
     </div>
 
+    <% if (document.file_path) { %>
     <div class="form-group">
-      <label for="content">Содержимое документа</label>
+      <label>Текущий файл</label>
+      <div class="current-file">
+        <span class="file-name">
+          <i class="fas fa-file-pdf"></i> <%= document.file_name %>
+        </span>
+        <a href="/documents/<%= document.id %>/download" class="btn btn-sm"
+          >Скачать</a
+        >
+      </div>
+    </div>
+    <% } %>
+
+    <div class="form-group">
+      <label for="document_file">Загрузить новый файл</label>
+      <input
+        type="file"
+        id="document_file"
+        name="document_file"
+        accept=".pdf,.doc,.docx"
+      />
+      <small>
+        <% if(document.file_path) { %> Загрузите новый файл, чтобы заменить
+        существующий <% } else { %> Разрешенные форматы: PDF, DOC, DOCX (макс.
+        10MB) <% } %>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="content">Альтернативное текстовое содержимое</label>
       <textarea id="content" name="content" rows="10">
 <%= document.content || '' %></textarea
       >
-      <small>Пока работаем с текстом, PDF добавим позже</small>
+      <small>
+        <% if(document.file_path) { %> Текстовое содержимое отображается при
+        невозможности просмотра файла <% } else { %> Заполняется, если нет
+        загружаемого файла <% } %>
+      </small>
     </div>
 
     <div class="form-actions">

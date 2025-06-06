@@ -1,0 +1,17 @@
+<%- include('partials/head', { title }) %> <%- include('partials/header') %>
+
+<div class="container success-page">
+  <div class="success-icon">
+    <i class="fas fa-check-circle"></i>
+  </div>
+
+  <h1><%= title %></h1>
+
+  <p class="success-message"><%= message %></p>
+
+  <div class="success-actions">
+    <a href="<%= link %>" class="btn btn-primary"><%= linkText %></a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

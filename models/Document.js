@@ -42,10 +42,31 @@ class Document {
   // Создать новый документ
   static async create(documentData) {
     try {
-      const { title, description, content, file_path, user_id } = documentData;
+      const {
+        title,
+        description,
+        content,
+        file_path,
+        file_name,
+        file_size,
+        file_type,
+        user_id,
+      } = documentData;
       const result = await db.query(
-        "INSERT INTO documents (title, description, content, file_path, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-        [title, description, content, file_path, user_id]
+        `INSERT INTO documents 
+        (title, description, content, file_path, file_name, file_size, file_type, user_id) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+        RETURNING id`,
+        [
+          title,
+          description,
+          content,
+          file_path,
+          file_name,
+          file_size,
+          file_type,
+          user_id,
+        ]
       );
       return result.rows[0].id;
     } catch (err) {
@@ -56,11 +77,56 @@ class Document {
   // Обновить документ
   static async update(id, documentData) {
     try {
-      const { title, description, content, file_path } = documentData;
-      const result = await db.query(
-        "UPDATE documents SET title = $1, description = $2, content = $3, file_path = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5",
-        [title, description, content, file_path, id]
-      );
+      const {
+        title,
+        description,
+        content,
+        file_path,
+        file_name,
+        file_size,
+        file_type,
+      } = documentData;
+      let query = "UPDATE documents SET title = $1, description = $2";
+      let params = [title, description];
+      let paramCount = 3;
+
+      // Добавляем контент, если он предоставлен
+      if (content !== undefined) {
+        query += `, content = $${paramCount}`;
+        params.push(content);
+        paramCount++;
+      }
+
+      // Добавляем информацию о файле, если она предоставлена
+      if (file_path !== undefined) {
+        query += `, file_path = $${paramCount}`;
+        params.push(file_path);
+        paramCount++;
+
+        if (file_name !== undefined) {
+          query += `, file_name = $${paramCount}`;
+          params.push(file_name);
+          paramCount++;
+        }
+
+        if (file_size !== undefined) {
+          query += `, file_size = $${paramCount}`;
+          params.push(file_size);
+          paramCount++;
+        }
+
+        if (file_type !== undefined) {
+          query += `, file_type = $${paramCount}`;
+          params.push(file_type);
+          paramCount++;
+        }
+      }
+
+      // Добавляем updated_at и id
+      query += `, updated_at = CURRENT_TIMESTAMP WHERE id = $${paramCount}`;
+      params.push(id);
+
+      const result = await db.query(query, params);
       return result.rowCount > 0;
     } catch (err) {
       throw err;
@@ -90,6 +156,31 @@ class Document {
     } catch (err) {
       throw err;
     }
+  }
+
+  // Получить информацию о типе файла документа
+  static getFileInfo(filePath) {
+    if (!filePath) return null;
+
+    const parsedPath = filePath.split("/").pop();
+    const extension = parsedPath.split(".").pop().toLowerCase();
+
+    const fileTypes = {
+      pdf: { type: "application/pdf", icon: "fa-file-pdf" },
+      doc: { type: "application/msword", icon: "fa-file-word" },
+      docx: {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        icon: "fa-file-word",
+      },
+      txt: { type: "text/plain", icon: "fa-file-alt" },
+    };
+
+    return (
+      fileTypes[extension] || {
+        type: "application/octet-stream",
+        icon: "fa-file",
+      }
+    );
   }
 }
 

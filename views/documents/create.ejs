@@ -14,7 +14,12 @@
         <div class="alert alert-error"><%= error %></div>
         <% } %>
 
-        <form method="POST" action="/documents/create" class="document-form">
+        <form
+          method="POST"
+          action="/documents/create"
+          class="document-form"
+          enctype="multipart/form-data"
+        >
           <div class="form-group">
             <label for="title">Название документа*</label>
             <input type="text" id="title" name="title" required />
@@ -26,14 +31,25 @@
           </div>
 
           <div class="form-group">
-            <label for="content">Содержимое документа</label>
+            <label for="document_file">Загрузить файл</label>
+            <input
+              type="file"
+              id="document_file"
+              name="document_file"
+              accept=".pdf,.doc,.docx"
+            />
+            <small>Разрешенные форматы: PDF, DOC, DOCX (макс. 10MB)</small>
+          </div>
+
+          <div class="form-group">
+            <label for="content">Альтернативное текстовое содержимое</label>
             <textarea
               id="content"
               name="content"
               rows="10"
-              placeholder="Введите текст документа..."
+              placeholder="Введите текст документа (если нет файла)..."
             ></textarea>
-            <small>Пока работаем с текстом, PDF добавим позже</small>
+            <small>Заполняется, если нет загружаемого файла</small>
           </div>
 
           <div class="form-actions">

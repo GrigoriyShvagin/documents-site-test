@@ -25,23 +25,56 @@
       <h3>Описание</h3>
       <p><%= document.description %></p>
     </div>
-    <% } %>
+    <% } %> <% if (document.file_path) { %>
+    <div class="file-section">
+      <h3>Файл документа</h3>
+      <div class="file-info">
+        <div class="file-item">
+          <% let fileIcon = 'fa-file'; if (document.file_type &&
+          document.file_type.includes('pdf')) { fileIcon = 'fa-file-pdf'; } else
+          if (document.file_type && document.file_type.includes('word')) {
+          fileIcon = 'fa-file-word'; } %>
+          <i class="fas <%= fileIcon %>"></i>
+          <span class="file-name"
+            ><%= document.file_name || document.file_path.split('/').pop()
+            %></span
+          >
+          <% if(document.file_size) { %>
+          <span class="file-size"
+            >(<%= Math.round(document.file_size / 1024) %> KB)</span
+          >
+          <% } %>
+          <a
+            href="/documents/<%= document.id %>/download"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-download"></i> Скачать
+          </a>
+        </div>
+      </div>
 
-    <div class="content-section">
-      <h3>Содержимое документа</h3>
-      <% if (document.content) { %>
-      <div class="document-text"><%= document.content %></div>
-      <% } else { %>
-      <p class="no-content">Содержимое документа не добавлено</p>
+      <% if (document.file_type && document.file_type.includes('pdf')) { %>
+      <div class="pdf-preview">
+        <h4>Предпросмотр</h4>
+        <embed
+          src="/uploads/<%= document.file_path.split('/').pop() %>"
+          type="application/pdf"
+          width="100%"
+          height="500px"
+        />
+      </div>
       <% } %>
     </div>
-
-    <% if (document.file_path) { %>
-    <div class="file-section">
-      <h3>Файлы</h3>
-      <p>Файл: <%= document.file_path %></p>
-      <!-- В будущем здесь будет возможность скачать PDF -->
+    <% } %> <% if (document.content) { %>
+    <div class="content-section">
+      <h3>
+        <%= document.file_path ? 'Дополнительное текстовое содержимое' :
+        'Содержимое документа' %>
+      </h3>
+      <div class="document-text"><%= document.content %></div>
     </div>
+    <% } else if (!document.file_path) { %>
+    <p class="no-content">Содержимое документа не добавлено</p>
     <% } %>
   </div>
 
