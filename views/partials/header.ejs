@@ -9,9 +9,9 @@
         <!-- Авторизованный пользователь -->
         <li><a href="/documents">Документы</a></li>
         <li><a href="/documents/my">Мои документы</a></li>
+        <% if (user.role !== 'support' && user.role !== 'admin') { %>
         <li><a href="/documents/contact/form">Поддержка</a></li>
-
-        <% if (user.role === 'admin') { %>
+        <% } %> <% if (user.role === 'admin') { %>
         <!-- Админ -->
         <li><a href="/admin">Админка</a></li>
         <% } %> <% if (user.role === 'support' || user.role === 'admin') { %>

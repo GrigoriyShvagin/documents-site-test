@@ -7,9 +7,10 @@ const DocumentsController = {
   // Список всех документов
   index: async (req, res) => {
     try {
-      const documents = await Document.getAll();
+      // Показываем только документы текущего пользователя
+      const documents = await Document.getByUserId(req.session.user.id);
       res.render("documents/index", {
-        title: "Библиотека документов",
+        title: "Ваши документы",
         documents,
       });
     } catch (err) {
@@ -35,6 +36,17 @@ const DocumentsController = {
         title: "Ошибка",
         message: "Не удалось загрузить ваши документы",
       });
+    }
+  },
+
+  // API для получения документов пользователя (для поиска)
+  getMyDocumentsForSearch: async (req, res) => {
+    try {
+      const documents = await Document.getByUserId(req.session.user.id);
+      res.json(documents);
+    } catch (err) {
+      console.error("Ошибка при получении документов для API:", err);
+      res.status(500).json({ error: "Не удалось загрузить документы" });
     }
   },
 
@@ -329,11 +341,17 @@ const DocumentsController = {
   search: async (req, res) => {
     try {
       const { query } = req.query;
-      const documents = await Document.search(query);
+
+      // Используем специальный метод для поиска по документам пользователя
+      const documents = await Document.searchByUserId(
+        query,
+        req.session.user.id
+      );
+
       res.render("documents/search", {
         title: `Результаты поиска: ${query}`,
         documents,
-        searchQuery: query,
+        query,
       });
     } catch (err) {
       console.error(err);

@@ -31,11 +31,6 @@
           <td><%= document.username || 'Неизвестно' %></td>
           <td><%= new Date(document.created_at).toLocaleDateString('ru') %></td>
           <td>
-            <a
-              href="/documents/<%= document.id %>/edit"
-              class="btn btn-secondary btn-sm"
-              >Редактировать</a
-            >
             <form
               action="/admin/documents/<%= document.id %>/delete"
               method="POST"

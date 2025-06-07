@@ -470,19 +470,85 @@ footer p {
 
 /* Страница ошибки */
 .error-page {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 3rem 2rem 2.5rem 2rem;
+  margin: 3rem auto 2rem auto;
+  max-width: 480px;
   text-align: center;
-  padding: 3rem 0;
+  position: relative;
+  animation: fadeIn404 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.error-page .error-404 {
+  font-size: 6rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 16px rgba(0, 86, 179, 0.08);
+  line-height: 1;
+  animation: bounce404 1.2s;
+}
+
+.error-page .error-emoji {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  animation: wiggle404 1.2s;
+}
+
+@keyframes fadeIn404 {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes bounce404 {
+  0% {
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes wiggle404 {
+  0% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .error-page h2 {
-  color: var(--danger-color);
+  font-size: 2.2rem;
+  color: var(--primary-color);
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .error-page p {
+  color: var(--light-text);
   font-size: 1.1rem;
   margin-bottom: 2rem;
-  color: var(--light-text);
+}
+
+.error-page .btn {
+  margin: 0 0.5rem;
+  min-width: 120px;
+  font-size: 1rem;
 }
 
 /* Статистические карточки */

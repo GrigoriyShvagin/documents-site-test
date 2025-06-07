@@ -12,6 +12,12 @@ router.use(requireAuth);
 // Мои документы
 router.get("/my", DocumentsController.myDocuments);
 
+// API для поиска по своим документам
+router.get("/api/my", DocumentsController.getMyDocumentsForSearch);
+
+// Поиск документов
+router.get("/search", DocumentsController.search);
+
 // Форма создания документа
 router.get("/create", DocumentsController.createForm);
 
@@ -40,9 +46,6 @@ router.get("/:id", DocumentsController.show);
 
 // Скачивание документа
 router.get("/:id/download", DocumentsController.download);
-
-// Поиск документов
-router.get("/search", DocumentsController.search);
 
 // Контактная форма для связи с поддержкой
 router.get("/contact/form", DocumentsController.contactForm);

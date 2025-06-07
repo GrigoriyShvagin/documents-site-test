@@ -38,6 +38,11 @@ app.use("/documents", require("./routes/documents"));
 app.use("/admin", require("./routes/admin"));
 app.use("/support", require("./routes/support"));
 
+// Обработка 404 ошибки
+app.use((req, res, next) => {
+  res.status(404).render("404");
+});
+
 // Запуск сервера
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);

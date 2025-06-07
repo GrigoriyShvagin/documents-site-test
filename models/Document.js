@@ -182,6 +182,19 @@ class Document {
       }
     );
   }
+
+  // Поиск документов пользователя
+  static async searchByUserId(query, userId) {
+    try {
+      const result = await db.query(
+        "SELECT d.*, u.username FROM documents d LEFT JOIN users u ON d.user_id = u.id WHERE (d.title ILIKE $1 OR d.description ILIKE $1 OR d.content ILIKE $1) AND d.user_id = $2 ORDER BY d.created_at DESC",
+        [`%${query}%`, userId]
+      );
+      return result.rows;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Document;
